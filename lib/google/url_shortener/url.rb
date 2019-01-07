@@ -11,8 +11,12 @@ module Google
       end
 
       def decode!
-        #params   = validate_and_prepare_params(:shortUrl => self.short_url, :projection => Analytics::PROJECTION_LEVEL)
-        params = validate_and_prepare_params(shortUrl: self.short_url)
+        if @projection
+          params   = validate_and_prepare_params(:shortUrl => self.short_url, :projection => Analytics::PROJECTION_LEVEL)
+        else
+          params = validate_and_prepare_params(shortUrl: self.short_url)
+        end
+
         response = get(params)
 
         @created_at = Date.parse(response["created"]) if response["created"]
