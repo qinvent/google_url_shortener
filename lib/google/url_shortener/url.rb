@@ -11,11 +11,12 @@ module Google
       end
 
       def decode!
-        params   = validate_and_prepare_params(:shortUrl => self.short_url, :projection => Analytics::PROJECTION_LEVEL)
+        #params   = validate_and_prepare_params(:shortUrl => self.short_url, :projection => Analytics::PROJECTION_LEVEL)
+        params = validate_and_prepare_params(shortUrl: self.short_url)
         response = get(params)
 
-        @created_at = Date.parse(response["created"])
-        @analytics  = Analytics.from_hash(response["analytics"])
+        @created_at = Date.parse(response["created"]) if response["created"]
+        @analytics  = Analytics.from_hash(response["analytics"]) if response["analytics"]
         @long_url   = response["longUrl"]
       end
       alias_method :expand!, :decode!
